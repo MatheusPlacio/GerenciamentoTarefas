@@ -13,7 +13,7 @@ Sistema completo de gerenciamento de tarefas (To-Do App) desenvolvido com **Angu
    - A API estará disponível em: `https://localhost:7299`
    - Swagger UI: `https://localhost:7299/swagger/index.html`
 
-   2. **Configure a string de conexão no appsettings** troque o 'MATHEUS\\SQLEXPRESS', para o nome que estiver em sua máquina no SqlServer.
+   2. **Configure a string de conexão no appsettings** troque o 'DESKTOP-EU9NGM6\\SQLEXPRESS', para o nome que estiver em sua máquina no SqlServer.
      "DefaultConnection": "Server=MATHEUS\\SQLEXPRESS;Database=GerenciamentoProjetos;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
       A migration já está criada, vá em ferramentas no visual studio > Gerenciador de Pacotes NuGet > Console do Gerenciador de Pacotes > Em projeto padrão escolha: GarenciamentoTarefas.Infra
 	  e execute o comando 'update-database'.
