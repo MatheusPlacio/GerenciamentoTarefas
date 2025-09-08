@@ -1,0 +1,48 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h1>🎯 Gerenciamento de Tarefas</h1>
+      <p>Entre com suas credenciais para acessar o sistema</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="aoEnviar()" class="login-form">
+      <div class="form-group">
+        <label for="usuario">Usuário</label>
+                <input
+          type="text"
+          id="usuario"
+          formControlName="usuario"
+          class="form-control"
+          placeholder="Digite seu usuário">
+        <small class="helper-text">Usuário de teste: admin</small>
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+                <input
+          type="password"
+          id="senha"
+          formControlName="senha"
+          class="form-control"
+          placeholder="Digite sua senha">
+        <small class="helper-text">Senha de teste: 123456</small>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn-login"
+        [disabled]="loading || loginForm.invalid">
+        <span *ngIf="loading">Entrando...</span>
+        <span *ngIf="!loading">Entrar</span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <small>Use as credenciais de teste mencionadas acima para fazer login</small>
+    </div>
+  </div>
+</div>

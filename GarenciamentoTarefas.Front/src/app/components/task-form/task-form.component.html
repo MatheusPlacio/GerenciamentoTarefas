@@ -1,0 +1,91 @@
+<div class="task-form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h1>{{ isEditMode ? '✏️ Editar Tarefa' : '➕ Nova Tarefa' }}</h1>
+      <p>{{ isEditMode ? 'Faça as alterações necessárias na tarefa' : 'Preencha os dados para criar uma nova tarefa' }}</p>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>{{ isEditMode ? 'Carregando tarefa...' : 'Salvando...' }}</p>
+    </div>
+
+    <form [formGroup]="taskForm" (ngSubmit)="aoEnviar()" class="task-form" *ngIf="!loading">
+      <div class="form-group">
+        <label for="titulo">
+          Título <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="titulo"
+          formControlName="titulo"
+          class="form-control"
+          [class.error]="titulo?.invalid && titulo?.touched"
+          placeholder="Digite o título da tarefa"
+          maxlength="200">
+
+        <div class="validation-errors" *ngIf="titulo?.invalid && titulo?.touched">
+          <small *ngIf="titulo?.errors?.['required']">O título é obrigatório</small>
+          <small *ngIf="titulo?.errors?.['maxlength']">O título deve ter no máximo 200 caracteres</small>
+        </div>
+
+        <div class="char-counter">
+          {{ titulo?.value?.length || 0 }}/200
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="descricao">Descrição</label>
+        <textarea
+          id="descricao"
+          formControlName="descricao"
+          class="form-control textarea"
+          [class.error]="descricao?.invalid && descricao?.touched"
+          placeholder="Digite uma descrição para a tarefa (opcional)"
+          rows="4"
+          maxlength="1000"></textarea>
+
+        <div class="validation-errors" *ngIf="descricao?.invalid && descricao?.touched">
+          <small *ngIf="descricao?.errors?.['maxlength']">A descrição deve ter no máximo 1000 caracteres</small>
+        </div>
+
+        <div class="char-counter">
+          {{ descricao?.value?.length || 0 }}/1000
+        </div>
+      </div>
+
+      <div class="form-group" *ngIf="isEditMode">
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              formControlName="concluida"
+              class="checkbox">
+            <span class="checkmark"></span>
+            Marcar como concluída
+          </label>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="error">
+        {{ error }}
+      </div>
+
+      <div class="form-actions">
+                <button
+          type="button"
+          class="btn-cancel"
+          (click)="aoCancelar()">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="btn-save"
+          [disabled]="loading || taskForm.invalid">
+          <span *ngIf="loading">Salvando...</span>
+          <span *ngIf="!loading">{{ isEditMode ? 'Atualizar' : 'Criar Tarefa' }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="task-list-container">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <h1>🎯 Gerenciamento de Tarefas</h1>
+      <button class="btn-logout" (click)="fazerLogout()">
+        🚪 Sair
+      </button>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="filters">
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'all'"
+        (click)="aoMudarFiltro('all')">
+        Todas ({{ tasks.length }})
+      </button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'pending'"
+        (click)="aoMudarFiltro('pending')">
+        Pendentes ({{ obterContadorTarefasPorStatus(false) }})
+      </button>
+      <button
+        class="filter-btn"
+        [class.active]="filter === 'completed'"
+        (click)="aoMudarFiltro('completed')">
+        Concluídas ({{ obterContadorTarefasPorStatus(true) }})
+      </button>
+    </div>
+    <button class="btn-new-task" (click)="criarNovaTarefa()">
+      ➕ Nova Tarefa
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Carregando tarefas...</p>
+  </div>
+
+  <!-- Task List -->
+  <div class="tasks-grid" *ngIf="!loading">
+    <div class="task-card"
+         *ngFor="let task of filteredTasks; trackBy: rastrearPorId"
+         [class.completed]="task.concluida">
+
+      <div class="task-header">
+        <div class="task-status">
+          <input
+            type="checkbox"
+            [checked]="task.concluida"
+            (change)="alternarConclusaoTarefa(task)"
+            class="task-checkbox">
+        </div>
+        <div class="task-actions">
+          <button class="btn-edit" (click)="editarTarefa(task)" title="Editar">
+            ✏️
+          </button>
+          <button class="btn-delete" (click)="excluirTarefa(task)" title="Excluir">
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <div class="task-content">
+        <h3 class="task-title" [class.strike]="task.concluida">
+          {{ task.titulo }}
+        </h3>
+        <p class="task-description" *ngIf="task.descricao" [class.strike]="task.concluida" [title]="task.descricao">
+          {{ task.descricao }}
+        </p>
+        <div class="task-meta">
+          <span class="task-date">
+            📅 {{ task.dataCriacao | date:'dd/MM/yyyy HH:mm' }}
+          </span>
+          <span class="task-status-badge" [class.completed]="task.concluida">
+            {{ task.concluida ? '✅ Concluída' : '⏳ Pendente' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredTasks.length === 0">
+      <div class="empty-icon">📋</div>
+      <h3>Nenhuma tarefa encontrada</h3>
+      <p *ngIf="filter === 'all'">Que tal criar sua primeira tarefa?</p>
+      <p *ngIf="filter === 'pending'">Todas as tarefas estão concluídas! 🎉</p>
+      <p *ngIf="filter === 'completed'">Nenhuma tarefa foi concluída ainda.</p>
+      <button class="btn-new-task" (click)="criarNovaTarefa()" *ngIf="filter === 'all'">
+        ➕ Criar Primeira Tarefa
+      </button>
+    </div>
+  </div>
+</div>
